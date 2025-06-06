@@ -1,0 +1,3 @@
+# Ignorer noder og miljøvariabler
+node_modules/
+.env
