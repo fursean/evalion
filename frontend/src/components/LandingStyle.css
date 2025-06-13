@@ -1,0 +1,121 @@
+/* Bakgrunn */
+.layout-landing {
+  min-height: 100vh;
+  background: linear-gradient(to right, #f0e6f6, #e2f0f9);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Toppnav */
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 40px;
+  background: transparent;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+}
+
+.logo-area img {
+  height: 80px;
+  margin-right: 14px;
+}
+
+.brand {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #303030;
+}
+
+.header-nav nav {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.header-nav nav a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: #222;
+  position: relative;
+  cursor: pointer;
+}
+
+.nav-icon {
+  height: 28px;
+}
+
+.header-nav nav a.active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.header-nav a:hover {
+  color: #555;
+}
+
+.header-nav nav {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.btn {
+  padding: 10px 22px;
+  border: 2px solid;
+  border-radius: 50px;
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.04);
+}
+
+/* Primær knapper */
+.login-lærer {
+  border-color: #2a6475;
+  color: #2a6475;
+}
+
+.login-elev {
+  border-color: #2a7538;
+  color: #2a7538;
+}
+
+.pink {
+  border-color: #d98abf;
+  color: #d98abf;
+}
+
+/* Midtboks */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 80px;
+}
+
+.landing-box {
+  background: #f8f8f8;
+  border-radius: 25px;
+  padding: 60px 50px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  width: 360px;
+}
+

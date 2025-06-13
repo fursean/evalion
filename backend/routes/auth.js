@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../supabase');
 
-
 // POST /api/login
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -11,34 +10,27 @@ router.post('/login', async (req, res) => {
   const { data, error } = await supabase
     .from('users')
     .select('username, password, role, name, class')
-    .ilike('username', username) // 👈 matcher case-insensitivt
-    .maybeSingle();
+    .eq('username', username);
 
-  console.log("Supabase svar:", data, error);
+  const user = data?.[0];
+  console.log("Supabase data:", user);
 
-  if (error || !data) return res.status(401).json({ error: 'Bruker ikke funnet' });
+  if (error || !user) {
+    console.log("Fant ikke bruker");
+    return res.status(401).json({ error: 'Bruker ikke funnet' });
+  }
 
-  if (data.password !== password) {
+  if (user.password !== password) {
+    console.log("Feil passord");
     return res.status(401).json({ error: 'Feil passord' });
   }
 
   res.status(200).json({
-    username: data.username,
-    role: data.role,
-    name: data.name,
-    class: data.class,
+    username: user.username,
+    role: user.role,
+    name: user.name,
+    class: user.class,
   });
-});
-
-
-// GET /api/users (for admin dashboard)
-router.get('/users', async (req, res) => {
-  const { data, error } = await supabase
-    .from('users')
-    .select('id, username, role, name, class');
-
-  if (error) return res.status(500).json({ error: error.message });
-  res.json(data);
 });
 
 

@@ -10,10 +10,12 @@ app.use(express.json());
 const authRoutes = require("./routes/auth");       
 const modulesRoute = require("./modules");
 const testsRouter = require("./routes/tests");
+const tasksRouter = require("./routes/tasks");
 
 app.use("/api", authRoutes);                      
 app.use("/api/modules", modulesRoute);
 app.use("/api/tests", testsRouter);
+app.use("/api/tasks", tasksRouter);
 
 // Test-rute
 app.get("/", (req, res) => {
@@ -25,3 +27,5 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server kjører på http://localhost:${PORT}`);
 });
+
+console.log("✅ Backend er koblet til Supabase:", process.env.SUPABASE_URL);

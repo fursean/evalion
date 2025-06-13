@@ -1,0 +1,33 @@
+.student-feature-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding-top: 60px;
+  flex-wrap: wrap;
+}
+
+.student-feature-box {
+  width: 220px;
+  height: 250px;
+  border-radius: 30px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  padding: 20px;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.student-feature-box:hover {
+  transform: translateY(-5px);
+}
+
+.student-feature-box h3 {
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: #222;
+}
+
+.student-feature-box img {
+  width: 100px;
+  height: auto;
+}

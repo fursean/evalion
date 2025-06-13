@@ -1,71 +1,69 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { setUser, getUser, logout } from "../utils/auth";
-import AdminDashboard from "./AdminDashboard";
-import TeacherDashboard from "./TeacherDashboard";
-import StudentDashboard from "./StudentDashboard";
+import { setUser } from "../utils/auth";
+import LayoutLanding from "./LayoutLanding";
+import "./LoginStyle.css";
 
+// Komponent for innloggingsside
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUserState] = useState(getUser());
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState(""); // Brukernavn-input
+  const [password, setPassword] = useState(""); // Passord-input
+  const [error, setError] = useState("");       // Feilmelding ved feil innlogging
+  const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  // Funksjon som kjøres ved innsending av skjema
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Hindrer sideoppdatering
     try {
+      // Sender POST-forespørsel til backend med brukernavn og passord
       const res = await axios.post("http://localhost:3001/api/login", 
         { username, password },
         { headers: { "Content-Type": "application/json" } }
       );
-      setUser(res.data);
-      setUserState(res.data);
+
+      const user = res.data;
+      setUser(user); // Lagrer brukerinfo i lokal lagring
+
+      // Navigerer til riktig dashboard basert på rolle
+      if (user.role === "teacher") {
+        navigate("/teacher");
+      } else if (user.role === "student") {
+        navigate("/student");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
+      // Viser feilmelding dersom innlogging mislykkes
       setError("Feil brukernavn eller passord");
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    setUserState(null);
-    setUsername("");
-    setPassword("");
-  };
-
-  // Ikke logget inn → vis login-skjema
-  if (!user) {
-    return (
-      <div style={{ padding: 20 }}>
-        <h2>Logg inn</h2>
-        <input
-          type="text"
-          placeholder="Brukernavn"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <br />
-        <input
-          type="password"
-          placeholder="Passord"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
-        <button onClick={handleLogin}>Logg inn</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </div>
-    );
-  }
-
-  // Etter innlogging → vis riktig dashboard
   return (
-    <div style={{ padding: 20 }}>
-      <p>Velkommen, {user.name} ({user.role})</p>
-      <p>Klasse: {user.class}</p>
-      <button onClick={handleLogout}>Logg ut</button>
+    <LayoutLanding>
+      <div className="login-box">
+        <h2>Logg inn</h2>
+        {/* Skjema for innlogging */}
+        <form onSubmit={handleLogin}>
+          <input
+            type="text"
+            placeholder="Brukernavn"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            autoFocus
+          />
+          <input
+            type="password"
+            placeholder="Passord"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Logg inn</button>
+        </form>
 
-      {user.role === "admin" && <AdminDashboard />}
-      {user.role === "teacher" && <TeacherDashboard />}
-      {user.role === "student" && <StudentDashboard />}
-    </div>
+        {/* Viser feilmelding hvis den finnes */}
+        {error && <p className="error">{error}</p>}
+      </div>
+    </LayoutLanding>
   );
 }
